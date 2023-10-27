@@ -10,7 +10,7 @@ import {registerUser} from "../features/user/userSlice";
 import Container from '../Components/Container';
 
 
-const signUpSchema = yup.object({
+let signUpSchema = yup.object({
   firstname: yup.string().required("First name is required!"),
   lastname: yup.string().required("Last name is required!"),
   email: yup.string().nullable().email("mail should be valid!").required("Email Address is required"),
@@ -47,62 +47,72 @@ const Signup = () => {
                 <CustomInput 
                   type="text" 
                   name="firstname" 
-                  placeholder="First Name" 
+                  label="First Name" 
                   className='form-control'
                   value={formik.values.firstname}
                   onChange={formik.handleChange("firstname")}
                   onBlur={formik.handleBlur("firstname")}
                   />
-                <div className="error">
-                  {formik.touched.firstname && formik.errors.firstname}
+                <div className="errors mt-2">
+                  {formik.touched.firstname && formik.errors.firstname ? (
+                    <div>{formik.errors.firstname}</div>
+                  ) : null}
                 </div>
                 <CustomInput 
                   type="text" 
                   name="lastname" 
-                  placeholder="Last Name" 
+                  label="Last Name" 
                   className='form-control'
                   value={formik.values.lastname}
                   onChange={formik.handleChange("lastname")}
                   onBlur={formik.handleBlur("lastname")}
                   />
-                <div className="error">
-                  {formik.touched.lastname && formik.errors.lastname}
+                <div className="errors mt-2">
+                  {formik.touched.lastname && formik.errors.lastname ? (
+                    <div>{formik.errors.lastname}</div>
+                  ) : null}
                 </div>      
                 <CustomInput 
                   type="text" 
                   name="email" 
-                  placeholder="Email" 
+                  label="Email" 
                   className='form-control'
                   value={formik.values.email}
                   onChange={formik.handleChange("email")}
                   onBlur={formik.handleBlur("email")}
                   />
-                <div className="error">
-                  {formik.touched.email && formik.errors.email}
+                <div className="errors mt-2">
+                  {formik.touched.email && formik.errors.email ? (
+                    <div>{formik.errors.email}</div>
+                  ) : null}
                 </div>               
                 <CustomInput 
                   type="text" 
                   name="password" 
-                  placeholder="Password" 
+                  label="Password" 
                   className='form-control'
                   value={formik.values.password}
                   onChange={formik.handleChange("password")}
                   onBlur={formik.handleBlur("password")}
                   />
-                <div className="error">
-                  {formik.touched.password && formik.errors.password}
+                <div className="errors mt-2">
+                  {formik.touched.password && formik.errors.password ? (
+                    <div>{formik.errors.password}</div>
+                  ) : null}
                 </div>  
                 <CustomInput 
                   type="text" 
                   name="phone" 
-                  placeholder="Phone Number" 
+                  label="Phone Number" 
                   className='form-control'
                   value={formik.values.phone}
                   onChange={formik.handleChange("phone")}
                   onBlur={formik.handleBlur("phone")}
                   />
-                <div className="error">
-                  {formik.touched.phone && formik.errors.phone}
+                <div className="errors mt-2">
+                  {formik.touched.phone && formik.errors.phone ? (
+                    <div>{formik.errors.phone}</div>
+                  ) : null}
                 </div>
                 <div className="d-flex justify-content-center align-items-center gap-15 mt-3">
                   <button className="button border-0 ">Sign Up</button>

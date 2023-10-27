@@ -28,10 +28,6 @@ const Services = [{
     "tagline": "Save upto 25% off",
     "images": "images/headphone.png",
   },
-  {
-    "title": "Secure payment",
-    "tagline": "100% protected payment",
-    "images": "images/headphone.png",
-  },
+  
 ];
  export default Services;

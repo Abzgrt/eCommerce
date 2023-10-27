@@ -1,9 +1,11 @@
 import React from 'react';
 import {useDispatch} from "react-redux";
+import { useLocation } from 'react-router-dom';
 import BreadCrumb from '../Components/BreadCrumb';
 import Meta from '../Components/Meta';
 import Container from '../Components/Container';
 import CustomInput from '../Components/CustomInput';
+import { resetUserPassword } from '../features/user/userSlice';
 
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -19,6 +21,8 @@ const ResetPassSchema = yup.object().shape({
 });
   
 const ResetPassword = () => {
+  const location = useLocation();
+  const getToken = location.pathname.split('/')[2];
   const dispatch = useDispatch()
   const formik = useFormik({
     initialValues: {
@@ -27,7 +31,7 @@ const ResetPassword = () => {
     },
     validationSchema: ResetPassSchema,
     onSubmit: (values) => {
-      alert(JSON.stringify(values));
+      dispatch(resetUserPassword({token: getToken, password:values.password}));
      
     },
   })
@@ -44,21 +48,27 @@ const ResetPassword = () => {
               <CustomInput 
                   type="password" 
                   name="password" 
-                  placeholder="Password" 
+                  label="Password" 
                   className='form-control' 
                   onChange={formik.handleChange("password")}
                   onBlur={formik.handleBlur("password")}
                   value={formik.values.password}
                 />
+                <div className="errors mt-2">
+                  {formik.touched.password && formik.errors.password}
+                </div>
                <CustomInput 
                   type="password" 
                   name="confirmpass" 
-                  placeholder="Password" 
+                  label="Password" 
                   className='form-control' 
                   onChange={formik.handleChange("confirmpass")}
                   onBlur={formik.handleBlur("confirmpass")}
                   value={formik.values.confirmpass}
                 />
+                <div className="errors mt-2">
+                  {formik.touched.confirmpass && formik.errors.confirmpass}
+                </div>
                 <div>
                   <div className="d-flex justify-content-center align-items-center gap-15 mt-3">
                     <button className="button border-0 ">Ok</button>

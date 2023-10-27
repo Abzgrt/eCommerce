@@ -8,6 +8,7 @@ import CustomInput from '../Components/CustomInput';
 
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { forgotUserPassword } from '../features/user/userSlice';
 
 
 const ForgotPassSchema = yup.object().shape({
@@ -25,7 +26,7 @@ const ForgotPassword = () => {
     },
     validationSchema: ForgotPassSchema,
     onSubmit: (values) => {
-      alert(JSON.stringify(values));
+      dispatch(forgotUserPassword(values));
      
     },
   })
@@ -43,12 +44,15 @@ const ForgotPassword = () => {
               <CustomInput 
                   type="email" 
                   name="email" 
-                  placeholder="Email Address" 
+                  label="Email Address" 
                   className='form-control' 
                   onChange={ formik.handleChange("email")}
                   onBlur={formik.handleBlur("email")}
                   value={formik.values.email}
-                />                  
+                />  
+                <div className="errors mt-2">
+                  {formik.touched.email && formik.errors.email}
+                </div>                
                 <div className="d-flex justify-content-center align-items-center flex-column gap-15 mt-3">
                   <button className="button border-0" type="submit">Submit</button>
                   <Link to="/login"> Cancel</Link>

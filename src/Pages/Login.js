@@ -1,27 +1,30 @@
-import React, {useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import BreadCrumb from '../Components/BreadCrumb';
 import Meta from '../Components/Meta';
 import CustomInput from "../Components/CustomInput";
 import {loginUser} from "../features/user/userSlice";
 import Container from '../Components/Container';
 
-import { useFormik } from "formik";
 import * as yup from "yup";
+import { useFormik } from "formik";
 
 
-const LoginSchema = yup.object().shape({
+let LoginSchema = yup.object().shape({
   email: yup
-       .string()
-       .email("mail should be valid!")
-       .required("Email Address is required!"),
+    .string()
+    .email("Invalid Email!")
+    .required("Email is Required"),
   password: yup
-       .string()
-       .required("Password is required!"),
+    .string()
+    .required("Password is Required"),
 });
 const Login = () => {
-  const dispatch = useDispatch()
+  const authState = useSelector((state) => state.auth);
+  
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -29,10 +32,15 @@ const Login = () => {
     },
     validationSchema: LoginSchema,
     onSubmit: (values) => {
-      alert(JSON.stringify(values));
      dispatch(loginUser(values));
+     if(authState.isSuccess){
+      navigate('/');
+     }
+  
+     
     }
   });
+  
   return (
     <>
       <Meta title='Login' />
@@ -46,26 +54,30 @@ const Login = () => {
                 <CustomInput 
                   type="email" 
                   name="email" 
-                  placeholder="Email Address" 
-                  className='form-control' 
+                  label="Email Address" 
+                  classname='form-control' 
                   onChange={ formik.handleChange("email")}
                   onBlur={formik.handleBlur("email")}
                   value={formik.values.email}
                 />
-                <div className="error">
-                  {formik.touched.email && formik.errors.email}
+                <div className="errors mt-2">
+                  {formik.touched.email && formik.errors.email ? (
+                    <div>{formik.errors.email}</div>
+                  ) : null}
                 </div>
                 <CustomInput 
                   type="empasswordail" 
                   name="password" 
-                  placeholder="Password" 
-                  className='form-control' 
+                  label="Password" 
+                  classname='form-control' 
                   onChange={formik.handleChange("password")}
                   onBlur={formik.handleBlur("password")}
                   value={formik.values.password}
                 />
-                <div className="error">
-                  {formik.touched.password && formik.errors.password}
+                <div className="errors mt-2">
+                  {formik.touched.password && formik.errors.password ? (
+                    <div>{formik.errors.password}</div>
+                  ) : null}
                 </div>
                 <div>
                   <Link to="/forgot-password"> Forgot Password ?</Link>
