@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import { BsLinkedin,BsGithub,BsYoutube,BsInstagram } from 'react-icons/bs';
+import {PiNewspaperBold} from "react-icons/pi";
 
 function Footer() {
   return (
@@ -9,9 +10,9 @@ function Footer() {
         <div className="container-xxl">
           <div className="row align-items-center">
             <div className="col-5">
-              <div className="footer-top-data d-flex gap-30 align-items-center">
-                <img src="images/telegram.png" alt="newsletter" />
-                <h2 className="mb-0 text-white">Sign Up for Newletter</h2>
+              <div className="footer-top-data d-flex gap-15 align-items-center">
+                <PiNewspaperBold className="newsletter"/>
+                <h2 className="mb-0 text-white">Subscribe for Newsletter</h2>
               </div>
             </div>
             <div className="col-7">

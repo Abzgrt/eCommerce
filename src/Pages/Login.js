@@ -33,11 +33,16 @@ const Login = () => {
     validationSchema: LoginSchema,
     onSubmit: (values) => {
      dispatch(loginUser(values));
-     if(authState.isSuccess){
-      navigate('/');
-     }
-  
-     
+    }
+  });
+  const {user, isLoading, isError, isSuccess, message} = useSelector((state) => state.auth);
+  useEffect(() => {
+    
+    if(isSuccess){
+      navigate("/");
+    }
+    else{
+      navigate("");
     }
   });
   

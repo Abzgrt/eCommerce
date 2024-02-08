@@ -11,7 +11,7 @@ import Container from '../Components/Container'
 
 
 const Store = () => {
-  const [grid, setGrid] = useState(4);
+  const [grid, setGrid] = useState(3);
   const dispatch = useDispatch();
  
 
@@ -60,9 +60,8 @@ const Store = () => {
           <div className="col-3">
             <div className='filter-card mb-3'>
               <h3 className="filter-title"> Shop By Categories </h3>
-              <div>
-                <ul className="ps-0">
-                  <li>
+                <div className="ps-0">
+                  <ul>
                     {
                     categories && [...new Set(categories)].map((item, index) => {
                     return (
@@ -70,8 +69,7 @@ const Store = () => {
                     )
                     })
                     }
-                  </li>
-                </ul>
+                  </ul>
               </div>
             </div>
             <div className='filter-card mb-3'>

@@ -53,6 +53,7 @@ const createOrder = async(orderDetail) => {
 const getOrders = async() => {
     const response = await axios.get(`${base_url}user/get-orders`, config);
     if(response.data) {
+        console.log(response.data)
         return response.data;
     }
 }

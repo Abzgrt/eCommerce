@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import {Link} from "react-router-dom";
 import {BiArrowBack} from "react-icons/bi";
 import Container from '../Components/Container';
-import {createUserOrder} from '../features/user/userSlice'
 import { useFormik } from 'formik';
-import Succuss from './Success';
+import myContext from './myContext';
+
 import * as yup from 'yup';
 let shippingSchema = yup.object().shape({
   firstname: yup
@@ -31,12 +31,14 @@ let shippingSchema = yup.object().shape({
     .number()
     .required("Zipcode is Required"),
 });
+
 const Checkout = () => {
-  
+ 
   const dispatch = useDispatch();
   const cartState = useSelector((state) => state?.auth?.userCart);
   const [totalAmount, setTotalAmount] = useState(null);
-  const [shippingInfo, setShippingInfo ] = useState(null);
+  const [shippingInfo, setShippingInfo] = useState({});
+  const [showSusscess, setShowSusscess] = useState(false);
   const [cartProducts, setCartProducts] = useState([]);
   useEffect(() => {
     let sum = 0;
@@ -65,13 +67,12 @@ const Checkout = () => {
     },
     validationSchema: shippingSchema,
     onSubmit: (values) => {
-     setShippingInfo(values);
-     
-  
+      setShippingInfo(values);
+      sessionStorage.setItem('shippingInfo', JSON.stringify(values));
     }
   });
+  
   const checkout = () => {
-    <Succuss shippingInfo={shippingInfo}/>
     fetch("http://localhost:5000/api/user/create-stripe-session", {
     method: "POST",
     headers: {
@@ -83,7 +84,9 @@ const Checkout = () => {
     )
   })
     .then(res => {
-      if(res.ok) return res.json();
+      if(res.ok) {
+        return res.json();
+      }
       return res.json().then(json => Promise.reject(json))
     })
     .then(({url}) => {
@@ -216,7 +219,7 @@ const Checkout = () => {
                   return(
                     <div key={index} className="d-flex mb-2 gap-10 align-items-center">
                       <div className='w-75 d-flex gap-10'>
-                        <div className='w-25 position-relative gb-dark'>
+                        <div className='w-25 position-relative gb-dark cart-product-image'>
                           <span style={{top: "-20px", right: "-5px"}}className="badge bg-secondary text-white rounded-circle position-absolute p-2">
                             {item?.quantity}
                           </span>

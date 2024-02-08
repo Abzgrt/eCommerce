@@ -7,10 +7,12 @@ import { AiOutlineHeart } from "react-icons/ai";
 import BreadCrumb from '../Components/BreadCrumb';
 import Meta from '../Components/Meta';
 import ProductCard from '../Components/ProductCard';
+import Marquee from 'react-fast-marquee';
+import Container from '../Components/Container';
 import ReactImageZoom from 'react-image-zoom';
 import Color from "../Components/Color";
 import {getAProduct, addRating} from '../features/product/productSlice';
-import { addProdToCart, getUserCart } from '../features/user/userSlice';
+import userSlice, { addProdToCart, getUserCart } from '../features/user/userSlice';
 import {toast} from 'react-toastify';
 import { getAllProducts } from '../features/product/productSlice';
 
@@ -21,9 +23,9 @@ const SingleProduct = () => {
   const [alreadyAdded, setAlreadyAdded] = useState(false);
   
   const navigate = useNavigate();
-  const [star, setStar] = useState(null);
-  
-  const [comment, setComment] = useState(null);
+  const [star, setStar] = useState(0);
+  const [comment, setComment] = useState('');
+  const [isButtonClicked, setIsButtonClicked] = useState(false);
   
   const location = useLocation();
   const prodId = location.pathname.split('/')[2];
@@ -54,8 +56,10 @@ const SingleProduct = () => {
    
   }, []);
   const cartState = useSelector((state) => state?.auth?.userCart);
-
   const singleProductState = useSelector((state) => state?.product?.singleProduct);
+  const rating = useSelector((state) => state?.product?.rating)
+  const prodCategory = singleProductState?.category;
+  
   const productState = useSelector((state) => state?.product?.products);
    
   useEffect(() => {
@@ -77,8 +81,6 @@ useEffect(() => {
       
     }
 }}, [productState]);
-  
-
   const uploadCart = () => {
     if( color === null){
       toast.error("Please choose color!")
@@ -89,10 +91,8 @@ useEffect(() => {
       navigate('/cart');
     }
   }
-
-
   const props = {
-    width: 594,
+    width: 400,
     height: 600, 
     zoomwidth: 600, 
     img:  singleProductState?.images[0]?.url ? singleProductState?.images[0]?.url : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZdP7coACNI1bDkkKvFpDXhL6P-jGPLyhlAw&usqp=CAU"}
@@ -105,36 +105,40 @@ useEffect(() => {
     document.execCommand("copy");
     textField.remove();
   }
+  const handleButtonClick = (event) => {
+    event.preventDefault();
+    setIsButtonClicked(true);
+  };
   return (
     <>
-      <Meta title='Product Name' />
-      <BreadCrumb title='Product Name'/>
-      <div className="main-product-wrapper py-5 home-wrapper-2">
-        <div className="container-xxl">
-          <div className="row">
-            <div className="col-6">
-              <div className="main-product-img">
-                <div>
-                  <ReactImageZoom {...props}/> 
-                </div>
-              </div>
-              <div className="other-product-images d-flex flex-wrapp gap-15">
-                  {
-                    singleProductState?.images.map((item, index) => {
-                      return (
-                        <div key={index}>
-                          <img src={item?.url} 
-                            clasName="img-fluid"
-                            alt="produc image"
-                          />
-                        </div>  
-                      )
-                    })
-                  }
-              </div>
+      <Meta title={singleProductState?.title} />
+      <BreadCrumb title={singleProductState?.title}/>
+      <Container class1="main-product-wrapper py-5 home-wrapper-2" >
+        <div className="row">
+          <div className="col-6">
+            <div className="main-product-img">
+              <img src={singleProductState?.images[0]?.url ? singleProductState?.images[0]?.url : "Product image"} />
+              {/* <div>
+                <ReactImageZoom {...props}/> 
+              </div> */}
             </div>
+            {/* <div className="other-product-images d-flex flex-wrapp mt-1 border-radius gap-15">
+                {
+                  singleProductState?.images.map((item, index) => {
+                    return (
+                      <div key={index} >
+                        <img src={item?.url} 
+                          className="img-fluid"
+                          alt="product image"
+                        />
+                      </div>  
+                    )
+                  })
+                }
+            </div> */}
+          </div>
             <div className="col-6">
-              <div className="main-product-details">
+              <div className="main-product-details border-radius">
                 <div className="border-bottom">
                   <h3 className='title'>
                     {
@@ -144,13 +148,7 @@ useEffect(() => {
                   <div className="border-bottom py-3">
                     <p className="price"> $ {singleProductState?.price}</p>
                     <div className="d-flex align-items-center gap-10">
-                    <ReactStars 
-                      count={5} 
-                      size={24} 
-                      value={singleProductState?.totalrating}
-                      edit={false} 
-                      activecolor="#ffd700"
-                    />
+                    
                     <p className="mb-0 t-review"> (2 Reviews)</p>
                     </div>
                     <a href="#review" className='review-btn'> Write a Review</a>
@@ -176,18 +174,23 @@ useEffect(() => {
                       <h3 className='product-heading'>Availability :</h3>
                       <p className="product-data"> In Stock</p>
                     </div>
-                    <div className='d-flex flex-column gap-10 mt-2 mb-3'>
-                      <h3 className='product-heading'>Size :</h3>
-                      <div className="d-flex flex-wrap gap-15">
-                        <span className="badge border border-1 bg-white text-dark border-secondary">S</span>
-                        <span className="badge border border-1 bg-white text-dark border-secondary">M</span>
-                        <span className="badge border border-1 bg-white text-dark border-secondary">XL</span>
-                        <span className="badge border border-1 bg-white text-dark border-secondary">XXL</span>
-                      </div>
-                    </div>
+                    {
+                      prodCategory === "close" &&
+                      <>
+                        <div className='d-flex flex-column gap-10 mt-2 mb-3'>
+                          <h3 className='product-heading'>Size :</h3>
+                          <div className="d-flex flex-wrap gap-15">
+                            <span className="badge border border-1 bg-white text-dark border-secondary">S</span>
+                            <span className="badge border border-1 bg-white text-dark border-secondary">M</span>
+                            <span className="badge border border-1 bg-white text-dark border-secondary">XL</span>
+                            <span className="badge border border-1 bg-white text-dark border-secondary">XXL</span>
+                          </div>
+                        </div>
+                      </>
+                    }
                     {
                       alreadyAdded === false && <>
-                      <div className='d-flex flex-column gap-10 mt-2 mb-3'>
+                      <div className='d-flex gap-10 mt-2 mb-3'>
                         <h3 className='product-heading'>Color :</h3>
                         <Color setColor = {setColor} colorData={singleProductState?.color}/>
                       </div>
@@ -239,7 +242,7 @@ useEffect(() => {
                     <div className='d-flex align-items-center gap-10 my-2 my-3'>
                       <h3 className='product-heading'>Copy Product Link :</h3>
                       <a 
-                        href="javascript:void(0);" onClick = {() => {
+                        href="" onClick = {() => {
                           copyToClipboard(window.location.href);
                          }}>
                         Copy Product Link
@@ -249,76 +252,90 @@ useEffect(() => {
                 </div> 
               </div>
             </div>
-          </div>
         </div>
-      </div>
-      <div className="description-wrapper py-5 home-wrapper-2">
+      </Container>   
+      <Container class1="description-wrapper py-5 home-wrapper-2">
         <div className="container-xxl">
           <div className="row">
             <div className="col-12">
               <h4>Description</h4>
-              <div className="bg-white p-3">
+              <div className="bg-white border-radius p-3">
                 <p dangerouslySetInnerHTML = {{__html: singleProductState?.description}}></p>
               </div>
             </div> 
           </div>
         </div>
-      </div>
-      <section className="reviews-wrapper home-wrapper-2">
+      </Container>
+      <Container className="reviews-wrapper home-wrapper-2">
         <div className="container-xxl">
           <div className="row">
-            <div className=".col-12">
+            <div className="col-12">
               <h3 id="review" >Reviews</h3>
-              <div className="review-inner-wrapper">
+              <div className="review-inner-wrapper border-radius">
                 <div className="review-head d-flex justify-content-between align-items-end">
                     <div>
                       <h4 className='mb-2'>Customer Reviews</ h4>
                       <div className="d-flex align-items-center gap-10">
-                        <ReactStars 
-                          count={5} 
-                          size={24} 
-                          value={singleProductState?.totalrating}
-                          edit={false} 
-                          activecolor="#ffd700"
-                        />
-                        <p className="mb-0">Based on 2 Reviews</p>
+                        {
+                          singleProductState && (
+                            <ReactStars 
+                              count={5} 
+                              size={24} 
+                              value={singleProductState?.totalrating}
+                              edit={false} 
+                              activecolor="#ffd700"
+                            />
+                          )
+                        }
+                        <p className="mb-0">Based on {singleProductState?.ratings?.length} Reviews</p>
                       </div>
                     </div>
                     {orderedProduct && (
                     <div>
-                        <a href="" className='text-dark text-decoration-underline'> Write a Review</a>
+                        <a href="" className='text-dark text-decoration-underline' onClick={handleButtonClick}> Write a Review</a>
                     </div>
                     )}
                 </div>
-                <div className="review-form py-4">
+                {
+                  isButtonClicked === true && <>
+                  <div className="review-form py-4">
                     <h4>Write a Review</h4>
-                   <div>
-                    <ReactStars 
-                          count={5} 
-                          size={24} 
-                          value={3} 
-                          edit={true} 
-                          activeColor="#ffd700"
-                          onChange={(e) => setStar(e)}
-                      />
-                   </div>
+                    <div>
+                      <ReactStars 
+                            count={5} 
+                            size={24} 
+                            value={3} 
+                            edit={true} 
+                            activeColor="#ffd700"
+                            onChange={(e) => {
+                              
+                              setStar(e)}
+                            }
+                        />
+                    </div>
                     <div>
                       <textarea 
-                      name="comment" 
-                      id="" 
-                      className='w-100 form-control' 
-                      cols="30" 
-                      rows="4" 
-                      placeholder='comment' 
-                      onChange={(e) => setComment(e.target.value)}></textarea>
+                        name="comment" 
+                        id="" 
+                        className='w-100 form-control' 
+                        cols="30" 
+                        rows="4" 
+                        placeholder='comment' 
+                        onChange={(e) => {
+                          
+                          setComment(e.target.value)
+                        }}>
+                      </textarea>
                     </div>
                     <div className='d-flex justify-content-end'>
-                      <button className="button border-0 mt-3" type="button" onClick={ addRatingToProduct}>Submit Review</button>
+                      <button className="button border-0 mt-3" type="button" onClick={addRatingToProduct}>Submit Review</button>
                     </div>
-                </div>
+                  </div>
+                </>
+                } 
                 <div className="reviews mt-4">
                 {
-                  singleProductState && singleProductState?.ratings?.map((item, index) => {
+                  rating && rating?.ratings?.map((item, index) => {
                       return (
                         <div className="review" key={index}>
                           <div className="d-flex align-items-center gap-10">
@@ -341,20 +358,36 @@ useEffect(() => {
             </div>
           </div>
         </div>
-      </section>
-      <section className="popular-wrapper py-5 home-wrapper-2">
-        <div className="container-xxl">
+      </Container>
+      <Container className="popular-wrapper py-5 home-wrapper-2">
           <div className="row">
             <div className="col-12">
-              <h3 className="section-heading">Our Popular Products</h3>
+              <h3 className="section-heading">You may also like</h3>
             </div>            
           </div>
           <div className="row">
-            <ProductCard data={productState}/>
+          {/* <Container class1="marque-wrapper py-5 home-wrapper-2">
+            <div className='row'>
+              <div className='col-9'>
+                  <Marquee className="marque bg-white border-radius">
+                    {
+                      productState && productState.map((item, index) => {
+                        return(
+                          <div key={index}>
+                            <Link to={productState?._id} className="d-flex gap-30"><img src={item?.images[0]?.url} width="100px"/></Link>
+                          </div>
+                        ) 
+                      })
+                    }
+                  </Marquee>
+               
+              </div>
+            </div>
+          </Container> */}
             
           </div>   
-        </div>
-      </section>
+        
+      </Container>
     </>
   )
 }

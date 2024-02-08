@@ -22,7 +22,7 @@ const deleteCartProduct = (id) => {
   }, 200)
 }
 const userCartState = useSelector((state) => state?.auth?.userCart);
-
+const cartProdId = userCartState?.productId
 
   useEffect(() => {
     let sum = 0;
@@ -49,16 +49,16 @@ const userCartState = useSelector((state) => state?.auth?.userCart);
             userCartState && userCartState.map((item, index) => {
               return (
                 <div key={index} className="cart-data d-flex justify-content-between align-items-center">
-                  <div className="cart-col-1  d-flex align-items-center" >
-                      <div className="w-25">
-                        <img src="../images/watch.jpg" alt="product image" className="img-fluid"/>
+                  <div className="cart-col-1  d-flex align-items-center mb-2" >
+                      <div className="w-25 cart-product-image">
+                        <img src={item?.productId?.images[0]?.url} alt="product image" className="img-fluid"/>
                       </div>
                       <div className="w-75 mx-2">  
-                        <p>{item?.productId.title}</p>
-                        <p className="d-flex gap-3">Color:<ul className="colors ps-0">
-                          <li style={{backgroundColor: item?.color.title}}></li>
+                        <p>{item?.productId?.title}</p>
+                        <div className="d-flex gap-3">Color:<ul className="colors ps-0">
+                          <li style={{backgroundColor: item?.color?.title}}></li>
                          </ul> 
-                        </p>
+                        </div>
                       </div>
                     </div>
                   <div className="cart-col-2">

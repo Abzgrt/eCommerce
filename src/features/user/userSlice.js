@@ -52,9 +52,9 @@ export const getUserCart = createAsyncThunk(
         }
     });
 export const createUserOrder = createAsyncThunk(
-    "user/create-orders", async(orderDetail, thunkAPI) => {
+    "user/create-order", async(orderDetail, thunkAPI) => {
         try{
-            return await userService.getOrders(orderDetail);
+            return await userService.createOrder(orderDetail);
         }catch(error){
             thunkAPI.rejectWithValue(error);
         }

@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import {Link, useNavigate} from 'react-router-dom';
 import moment from 'moment';
-import Marquee from 'react-fast-marquee';
 import BlogCard from '../Components/BlogCard';
 import ProductCard from '../Components/ProductCard';
 import SpecialProduct from '../Components/SpecialProduct';
@@ -32,7 +31,7 @@ function Home() {
   useEffect(() =>{
     getProducts();
   }, []);
-  const productState = useSelector((state) => state.product.products);
+  const productState = useSelector((state) => state?.product?.products);
   
     
   
@@ -43,7 +42,7 @@ function Home() {
   return (
     <>
       <Container class1="home-wrapper-1 py-5">
-      <div className="row">
+        <div className="row">
             <div className="col-6">
               <div className="main-banner position-relative">
                 <img src="images/main-banner.jpg" alt="main banner" className='img-fluid rounded-3'style={{height: "72vh"}}/>
@@ -95,7 +94,7 @@ function Home() {
                 </div>
               </div>
             </div>
-          </div>
+        </div>
       </Container>
       <Container class1="home-wrapper-2 py-5">
         <div className="row">
@@ -104,7 +103,7 @@ function Home() {
               {
                 Services?.map((i, j) => {
                   return (
-                    <div className="d-flex align-items-center gap-15 key={j}">
+                    <div key={j} className="d-flex align-items-center gap-15">
                       <img src={i.images} alt="Services" />
                       <div>
                         <h6>{i.title}</h6>
@@ -190,17 +189,17 @@ function Home() {
           {
             productState && 
             productState?.map((item, index) => {
-              if(item.tags !== "featured") {
+              if(item.tags === "featured") {
                 return (
                   <div key={index} className={"col-3"}>
                     <div className="product-card position-relative">
-                      <div className="watch-icon position-absolute wishlist">
+                      <div className="heart-icon-box position-absolute wishlist">
                         <AiOutlineHeart 
-                          className="bg-transparent fs-5" 
+                          className="heart-icon bg-transparent fs-5" 
                           onClick={(e) => wishlist(item?._id)}/>
                       </div>
-                      <div className="product-image">
-                        <img src={item?.images[0]?.url} className="img-fluid d-flex mx-auto" alt="product image" width={100}/>
+                      <div className="product-image p-1">
+                        <img src={item?.images[0]?.url} className="img-fluid d-flex mx-auto" alt="product image" />
                       </div>
                       <div className="product-details">
                         <h6 className="brand">{item?.brand}</h6>
@@ -219,11 +218,9 @@ function Home() {
                         <p className="price">${item?.price}</p>
                       </div>
                       <div className="action-bar position-absolute">
-                        <div className="d-flex flex-column gap-15">
-                          <button className="border-0 bg-transparent">
-                            <img src="images/eye.png" alt="view" onClick={() => navigate("product/"+item?._id)}/>
-                          </button>
-                        </div>    
+                        <button className="border-0 bg-transparent">
+                          <img src="images/eye.png" alt="view product" width="25px" height="25px" onClick={() => navigate("product/"+item?._id)}/>
+                        </button>    
                       </div>
                     </div>
                   </div>
@@ -233,7 +230,7 @@ function Home() {
           }
         </div>
       </Container>
-      <Container class1="famous-wrapper py-5 home-wrapper-2">
+      {/* <Container class1="famous-wrapper py-5 home-wrapper-2">
         <div className="row">
           <div className="col-3">
             <div className="famous-card bg-dark position-relative">
@@ -276,7 +273,7 @@ function Home() {
             </div>
           </div>
         </div>
-      </Container>
+      </Container> */}
       <Container class1="special-wraper py-5 home-wrapper-2">
         <div className="row">
           <div className="col-12">
@@ -296,7 +293,7 @@ function Home() {
                       quantity={item?.quantity}
                       sold={item?.sold}
                       id={item?._id}
-                      img={item.images[0].url}
+                      img={item.images[0]?.url}
                     />
                   )
                 }
@@ -318,13 +315,13 @@ function Home() {
               return(
                 <div key = {index} className="col-3">
                   <div className="product-card position-relative">
-                    <div className="watch-icon position-absolute wishlist">
+                    <div className="heart-icon-box position-absolute wishlist">
                       <AiOutlineHeart 
-                        className="bg-transparent"
+                        className="bg-transparent fs-5"
                         onClick={(e) => wishlist(item?._id)}/>
                     </div>
                     <div className="product-image">
-                      <img src="images/watch.jpg" className="img-fluid d-flex mx-auto" alt="product image" width={100}/>
+                      <img src={item?.images[0]?.url} className="img-fluid d-flex mx-auto p-1" alt="product image"/>
                     </div>
                     <div className="product-details">
                       <h6 className="brand">{item?.brand}</h6>
@@ -343,11 +340,9 @@ function Home() {
                       <p className="price">${item?.price}</p>
                     </div>
                     <div className="action-bar position-absolute">
-                      <div className="d-flex flex-column gap-15">
-                        <button className="border-0 bg-transparent">
-                          <img src="images/eye.png" alt="view" onClick={() => navigate("product/"+item?._id)}/>
-                        </button>
-                      </div>    
+                      <button className="border-0 bg-transparent">
+                        <img src="images/eye.png" alt="view" width="25px" height="25px" onClick={() => navigate("product/"+item?._id)}/>
+                      </button>    
                     </div>
                   </div>
                 </div>
@@ -356,40 +351,6 @@ function Home() {
           })
         }
         </div> 
-      </Container>
-      <Container class1="marquee-wrapper py-5 home-wrapper-2">
-        <div className='row'>
-          <div className='col-12'>
-            <div className="marquee-inner-wrapper card-wrapper">
-              <Marquee className='d-flex'>
-                <div className='mx-4 w-25'>
-                  <img src="images/brand-3.jpg" width='110px' height='100px' alt="brand" />
-                </div>
-                <div className='mx-4 w-25'>
-                  <img src="images/brand-4.jpg" width='110px' height='100px' alt="brand" />
-                </div>
-                <div className='mx-4 w-25'>
-                  <img src="images/brand-5.jpg" width='110px' height='100px' alt="brand" />
-                </div>
-                <div className='mx-4 w-25'>
-                  <img src="images/brand-6.jpg" width='110px' height='100px' alt="brand" />
-                </div>
-                <div className='mx-4 w-25'>
-                  <img src="images/brand-7.jpg" width='110px' height='100px' alt="brand" />
-                </div>
-                <div className='mx-4 w-25'>
-                  <img src="images/brand-3.jpg" width='110px' height='100px' alt="brand" />
-                </div>
-                <div className='mx-4 w-25'>
-                  <img src="images/brand-4.jpg" width='110px' height='100px' alt="brand" />
-                </div>
-                <div className='mx-4 w-25'>
-                  <img src="images/brand-5.jpg" width='110px' height='100px' alt="brand" />
-                </div>
-              </Marquee>
-            </div>
-          </div>
-        </div>
       </Container>
       <Container class1="blog-wrapper py-5 home-wrapper-2">
         <div className="row">
@@ -406,7 +367,7 @@ function Home() {
                           id={item?._id} 
                           title={item?.title} 
                           description={item?.description} 
-                          image={item?.images[0].url}
+                          image={item?.images[0]?.url}
                           date={moment(item.createdAt).format("MMMM Do YYYY h:mm a")}
                         />  
                       </div> 

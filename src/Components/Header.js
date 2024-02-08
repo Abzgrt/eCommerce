@@ -4,12 +4,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import {BsSearch} from 'react-icons/bs';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
-import { AiOutlineHeart,AiOutlineUser, AiOutlineShoppingCart } from 'react-icons/ai'
+import { AiOutlineHeart,AiOutlineUser, AiOutlineShoppingCart, AiOutlineMenuFold } from 'react-icons/ai'
+import {IoIosGitCompare} from 'react-icons/io'
 
 const  Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [productOpt, setProductOpt] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const selectedArray = Array.isArray(selectedProduct) ? selectedProduct : selectedProduct ? [selectedProduct] : [];
   const [paginate, setPaginate ] = useState(true);
   const cartState = useSelector((state) => state?.auth?.userCart);
   
@@ -26,7 +29,7 @@ const  Header = () => {
   useEffect(() => {
     let data = [];
     for (let i = 0; i < productState?.length; i++) {
-      data.push({id:i, prod:productState[i]?._id, name:productState[i].title})
+      data.push({id:i, prodId:productState[i]?._id, name:productState[i].title})
     }
     
     setProductOpt(data);
@@ -50,8 +53,8 @@ const  Header = () => {
             </p>
           </div>
           <div className='col-6'>
-            <p className='text-end text-white mb-0'>hostline: <a className="text-white" href="tel:+251 915948189">
-              +251 915948189</a>
+            <p className='text-end text-white mb-0'>hotline: <a className="text-white" href="tel:+251915948189">
+              +251915948189</a>
             </p>
           </div>
         </div>
@@ -71,11 +74,14 @@ const  Header = () => {
                 id="pagination-example"
                 onPaginate={() => console.log("Results Paginated")}
                 onChange={(selected) => {
-                  navigate(`/product/${selected[0]?.prod}`)
+                  setSelectedProduct(selected[0])
+                  navigate(`/product/${selected[0]?.prodId}`)
                 }}
                 options={productOpt}
+                selected={selectedArray}
+                
                 paginate={paginate}
-                labelkey={"name"}
+                labelKey={"name"}
                 minLength={2}
                 placeholder="Search products..."
               />
@@ -88,7 +94,7 @@ const  Header = () => {
             <div className='header-upper-links d-flex align-items-center justify-contetn-between gap-15'>
                 <div>
                   <Link to='/compare-product' className='d-flex align-items-center gap-10 text-white'>
-                    <img src="images/compare.png" alt="compare" className="text-white"/>
+                    <IoIosGitCompare className="fs-5"/>
                     <p className='mb-0'>Compare <br/> Products</p>
                   </Link>
                 </div>
@@ -135,7 +141,7 @@ const  Header = () => {
                     data-bs-toggle="dropdown" 
                     aria-expanded="false"
                   >
-                    <img src="images/menu.png" width='25px' height='25px' alt="menu"/>
+                    <AiOutlineMenuFold className="fs-5"/>
                     <span className="me-5 d-inline-block">Shop Categories</span>
                   </button>
                   <ul 
@@ -171,13 +177,18 @@ const  Header = () => {
                   <NavLink  to="/order">
                     My Orders
                   </NavLink>
-                  <NavLink  to="/blog">
+                  <NavLink  to="/blogs">
                     Blogs
                   </NavLink>
                   <NavLink  to="/contact">
                     Contact
                   </NavLink>
-                  <button className='border border-0 bg-transparent text-white text-uppercase' onClick={handleLogout}>Logout</button>
+                  {
+                  localStorage.getItem("customer") !== null && <>
+                    <button className='border border-0 bg-transparent text-white text-uppercase' onClick={handleLogout}>Logout</button>
+
+                  </>
+                  }
                 </div>
               </div>
             </div>

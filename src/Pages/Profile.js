@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FiEdit } from 'react-icons/fi';
 import BreadCrumb from '../Components/BreadCrumb';
@@ -6,6 +6,8 @@ import Container from '../Components/Container'
 import {useFormik} from 'formik';
 import * as yup from 'yup';
 import {updateUserProfile} from '../features/user/userSlice';
+import {loginUser} from "../features/user/userSlice";
+
 
 let ProfileSchema = yup.object().shape({
     firstname: yup
@@ -26,7 +28,9 @@ const Profile = () => {
     const dispatch = useDispatch();
     
     const userState = useSelector((state) => state.auth.user);
+    console.log(userState)
     const [edit, setEdit ] = useState(true);
+    const [initialvalues, setInitialValues] = useState()
 
     const formik = useFormik({
         enableReinitialize: true,
@@ -40,6 +44,7 @@ const Profile = () => {
         onSubmit: (values) => {
           dispatch(updateUserProfile(values));
           setEdit(false)
+          window.location.reload()
         }
       });
   return (
@@ -50,7 +55,7 @@ const Profile = () => {
         <div className="col-12">
           <div className="d-flex justify-content-between align-items-center">
             <h3 className='my-3'>Update Profile</h3>
-            <FiEdit onClick={() => setEdit(false)} className="fs-3"/>
+            <FiEdit onClick={() => setEdit(false)} className="fs-3 edit-profile"/>
           </div>
         </div>
         <div className="col-12">
@@ -109,7 +114,7 @@ const Profile = () => {
           </div>
           {
             edit === false && 
-            <button type="submit" className="btn btn-primary ">Save</button>
+            <button type="submit" className="btn btn-primary">Save</button>
           }
         </form>
         </div>

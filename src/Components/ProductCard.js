@@ -5,7 +5,7 @@ import { Link, useLocation, useNavigate} from 'react-router-dom';
 import {AiOutlineHeart} from "react-icons/ai";
 import { addTowishlist } from '../features/product/productSlice';
 
-// import watch from "images/watch.jpg"
+import eye from "./Assets/eye.png"
 // import watch from "../images/watch.svg";
 // import watch from "../images/watch.svg";
 // import watch from "../images/watch.jpg";
@@ -14,7 +14,8 @@ import { addTowishlist } from '../features/product/productSlice';
 // import watch from "../images/watch.svg";
 const ProductCard = (props) => {
   const navigate = useNavigate();
-  const {grid, data, totalrating} = props;
+  const {grid, data} = props;
+  
   const dispatch = useDispatch();
   const wishlist = (id) => {
       dispatch(addTowishlist(id));
@@ -32,13 +33,13 @@ const ProductCard = (props) => {
               className={`${location.pathname == "/product" ? `gr-${grid}` : "col-3"}`}
             >
               <div className="product-card position-relative">
-                <div className="watch-icon position-absolute wishlist">
+                <div className="position-absolute wishlist heart-icon-box" >
                   <AiOutlineHeart 
                     className="bg-transparent fs-5" 
                     onClick={(e) => wishlist(item?._id)}/>
                 </div>
-                <div className="product-image">
-                  <img src="images/watch.jpg" className="img-fluid d-flex mx-auto" alt="product image" width={100}/>
+                <div className={`${grid === 12 ? "grid-12-product-image" : "product-image"}`}>
+                  <img src={item?.images[0]?.url} className="img-fluid d-flex mx-auto"  alt="product image"/>
                 </div>
                 <div className="product-details">
                   <h6 className="brand">{item?.brand}</h6>
@@ -46,7 +47,7 @@ const ProductCard = (props) => {
                   <ReactStars 
                     count={5} 
                     size={24} 
-                    value={totalrating}
+                    value={item.totalrating}
                     edit={false} 
                     activecolor="#ffd700"
                   />
@@ -56,10 +57,10 @@ const ProductCard = (props) => {
                   </p>
                   <p className="price">${item?.price}</p>
                 </div>
-                <div className="action-bar position-absolute">
+                <div className={`position-absolute ${grid === 12 ? "grid-12-action-bar" : "action-bar"}`}>
                   <div className="d-flex flex-column gap-15">
                     <button className="border-0 bg-transparent">
-                      <img src="images/eye.png" alt="view" onClick={() => navigate("/product/"+item?._id)}/>
+                      <img src={eye} alt="view" width="25px" height="25px" onClick={() => navigate("/product/"+item?._id)}/>
                     </button>
                   </div>    
                 </div>
