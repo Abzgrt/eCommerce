@@ -143,10 +143,48 @@ footer .input-group-text{
 /* Footer part ends here */
 
 /* Home Page */
+.home-img {
+  width: 100%;
+ 
+}
+
+.home-img img {
+  width: 100%;
+  height: 400px;
+  margin-bottom: 20px;
+}
 .main-banner-content{
   top: 40%;
   left:5%;
 }
+.home-wrapper-2 .services {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.home-wrapper-2 .services .service-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.home-wrapper-2 .services img {
+  width: 160px;
+  height: 190px;
+  border-radius: 5px;
+}
+.home-wrapper-2 .services img:hover{
+  transform: scale(1.2);
+  transition: transform 0.5s ease-in-out;
+  }
+.home-wrapper-2 .services .description {
+  flex-grow: 1;
+  margin-right: 15px;
+}
+
 .main-banner-content h4{
   font-size: 16px;
   font-weight: 400;

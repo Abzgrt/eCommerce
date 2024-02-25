@@ -42,7 +42,8 @@ function Home() {
   return (
     <>
       <Container class1="home-wrapper-1 py-5">
-        <div className="row">
+        <div className="home-img"><img src="images/eCommerce.jpg" alt="home image"/></div>
+        {/* <div className="row">
             <div className="col-6">
               <div className="main-banner position-relative">
                 <img src="images/main-banner.jpg" alt="main banner" className='img-fluid rounded-3'style={{height: "72vh"}}/>
@@ -58,7 +59,7 @@ function Home() {
               <div className="d-flex gap-30 justify-content-between align-items-center">
                 <div>
                   <div className="small-banner position-relative mb-4">
-                    <img src="images/laptop.jpg" alt="main banner" className='img-fluid rounded-3'/>
+                    <img src="images/iPhone.jpg" alt="main banner" className='img-fluid rounded-3'/>
                     <div className="small-banner-content position-absolute" style={{right: '40%'}}>
                       <h4>New Arrival</h4>
                       <h5>iPad S13+ Pro.</h5>
@@ -66,7 +67,7 @@ function Home() {
                     </div>
                   </div>
                   <div className="small-banner position-relative mb-4">
-                    <img src="images/laptop.jpg" alt="main banner" className='img-fluid rounded-3'/>
+                    <img src="images/pc.jpg" alt="main banner" className='img-fluid rounded-3'/>
                     <div className="small-banner-content position-absolute" style={{right: '40%'}}>
                       <h4>NEW ARRIVAL</h4>
                       <h5>iPad S13+ Pro.</h5>
@@ -84,7 +85,7 @@ function Home() {
                     </div>
                   </div>
                   <div className="small-banner position-relative mb-4">
-                    <img src="images/laptop.jpg" alt="main banner" className='img-fluid rounded-3'/>
+                    <img src="images/watch.jpg" alt="main banner" className='img-fluid rounded-3'/>
                     <div className="small-banner-content position-absolute" style={{right: '40%'}}>
                       <h4>BEST SALE</h4>
                       <h5>iPad S13+ Pro.</h5>
@@ -94,7 +95,7 @@ function Home() {
                 </div>
               </div>
             </div>
-        </div>
+        </div> */}
       </Container>
       <Container class1="home-wrapper-2 py-5">
         <div className="row">
@@ -103,9 +104,9 @@ function Home() {
               {
                 Services?.map((i, j) => {
                   return (
-                    <div key={j} className="d-flex align-items-center gap-15">
-                      <img src={i.images} alt="Services" />
-                      <div>
+                    <div key={j} className="d-flex align-items-center gap-30 service-item">
+                      <img src={i.images} alt="Services"/>
+                      <div className="description">
                         <h6>{i.title}</h6>
                         <p className="mb-0">{i.tagline}</p>
                       </div>

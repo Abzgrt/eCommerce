@@ -1,17 +1,17 @@
 const Services = [{
     "title": "Free Shipping",
     "tagline": "Free all orders over $5",
-    "images": "images/headphone.png",
+    "images": "images/hoodie.jpg",
   },
   {
     "title": "Free Shipping",
     "tagline": "Save upto 25% off",
-    "images": "images/headphone.png",
+    "images": "images/men black hoodie.jpg",
   },
   {
     "title": "Daily Surprise Offers",
     "tagline": "Save upto 25% off",
-    "images": "images/headphone.png",
+    "images": "images/men hoodie.jpg",
   },
   {
     "title": "Daily Surprise Offers",
@@ -21,12 +21,12 @@ const Services = [{
   {
     "title": "Support 24/7",
     "tagline": "ship with an expert",
-    "images": "images/headphone.png",
+    "images": "images/men shoes.jpg",
   },
   {
     "title": "Affordable Prices",
     "tagline": "Save upto 25% off",
-    "images": "images/headphone.png",
+    "images": "images/watch.jpg",
   },
   
 ];
