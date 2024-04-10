@@ -10,8 +10,8 @@
 //     }`,
 //     Accept: "application/json",
 //   },
-// };
-export const base_url = "https://mern-ecommerce-backend-vri7.onrender.com";
+// }; 
+export const base_url = "https://ecommerce-backend-taz5.onrender.com/api";
 
 const getTokenFromLocalStorage = () => {
   const customer = localStorage.getItem("customer");
